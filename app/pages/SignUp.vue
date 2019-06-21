@@ -1,6 +1,6 @@
 <template>
   <Page>
-    <action-bar-component title="Sign up"></action-bar-component>
+    <ActionBar title="Example"></ActionBar>
     <StackLayout>
       <Label class="message" :text="msg" col="0" row="0"/>
       <TextField v-model="email" hint="E-mail:"/>
@@ -11,9 +11,8 @@
 </template>
 
 <script>
-import ActionBarComponent from "../components/ActionBarComponent";
-import { apolloClient } from "../plugins/apolloProvider";
-import { SIGN_UP } from "../graphql/signUp";
+import ActionBarComponent from "@/components/ActionBarComponent";
+import { SIGN_UP } from "@/graphql/signUp";
 export default {
   data() {
     return {

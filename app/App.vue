@@ -1,64 +1,87 @@
 <template>
   <Page>
-    <action-bar-component title="Home"></action-bar-component>
+    <ActionBar title="Example"></ActionBar>
+
     <StackLayout>
-      <Label class="message" :text="msg" col="0" row="0"/>
-      <Button text="Sign in" @tap="$navigateTo(signin)"/>
-      <Button text="Sign up" @tap="$navigateTo(signup)"/>
-      <Carousel
-        height="200px"
-        width="100%"
-        pageChanged="myChangeEvent"
-        pageTapped="mySelectedEvent"
-        indicatorColor="#000"
-        finite="true"
-        bounce="false"
-        :showIndicator="false"
-        verticalAlignment="top"
-        android:indicatorAnimation="swap"
-        color="white"
-      >
-        <CarouselItem id="slide1" backgroundColor="#b3cde0" verticalAlignment="middle">
-          <Label text="Slide 1" backgroundColor="#50000000" horizontalAlignment="center"/>
-        </CarouselItem>
-        <CarouselItem id="slide2" backgroundColor="#6497b1" verticalAlignment="middle">
-          <Label text="Slide 2" backgroundColor="#50000000" horizontalAlignment="center"/>
-        </CarouselItem>
-        <CarouselItem id="slide3" backgroundColor="#005b96" verticalAlignment="middle">
-          <Label text="Slide 3" backgroundColor="#50000000" horizontalAlignment="center"/>
-        </CarouselItem>
-        <CarouselItem id="slide4" backgroundColor="#03396c" verticalAlignment="middle">
-          <Label text="Slide 4" backgroundColor="#50000000" horizontalAlignment="center"/>
-        </CarouselItem>
-      </Carousel>
+      <Label class="actionBarShadow"></Label>
+      <Label class="message" text="Login" col="0" row="0"/>
+      <Label class="message" :text="profileId" col="0" row="0"/>
+      <TextField v-model="email" hint="E-mail:"/>
+      <TextField v-model="password" :secure="true" hint="Password:"/>
+      <Button text="Login" @tap="login"/>
     </StackLayout>
   </Page>
 </template>
 
 <script>
-import SignUp from "./pages/SignUp";
-import SignIn from "./pages/SignIn";
-
-import ActionBarComponent from "./components/ActionBarComponent";
-
+import { SIGN_IN } from "./graphql/signIn";
 export default {
   data() {
     return {
-      msg: "Hello!",
-      signup: SignUp,
-      signin: SignIn
+      email: "",
+      password: "",
+      profileId: "ProfileID"
     };
   },
-  components: {
-    ActionBarComponent
+  methods: {
+    login() {
+      this.$apollo
+        .query({
+          query: SIGN_IN,
+          variables: {
+            email: this.email,
+            password: this.password
+          }
+        })
+        .then(res => {
+          console.log(res);
+          this.profileId = res.data.login.userId;
+        })
+        .catch(err => {
+          console.log(err, "SIGNIN_ERROR");
+        });
+      this.email = "";
+      this.password = "";
+    }
   }
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import "~/assets/sass/_vars.sass";
+
 ActionBar {
-  background-color: #53ba82;
-  color: #ffffff;
+  background-color: $dark;
+  color: $light;
+  box-shadow: 0 0 10px rgba($pink, 0.5);
+}
+
+.actionBarShadow {
+  background: linear-gradient(to bottom, rgba($pink, 0.3), rgba($pink, 0.1));
+  height: 15px;
+}
+
+StackLayout {
+  background-color: $dark;
+}
+
+button {
+  background-color: $dark;
+  color: $green;
+  border-color: $pink;
+  border-width: 2px;
+  width: 70%;
+  margin-top: 40px;
+}
+
+TextField {
+  background-color: $dark;
+  margin-bottom: 20px;
+  width: 80%;
+  border-color: $pink;
+  border-width: 2px;
+  color: $light;
+  placeholder-color: $light;
 }
 
 .message {
@@ -68,3 +91,5 @@ ActionBar {
   color: #333333;
 }
 </style>
+
+

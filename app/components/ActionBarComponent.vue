@@ -1,7 +1,5 @@
 <template>
-  <ActionBar :title="title">
-    <NavigationButton text="Go back" android.systemIcon="ic_menu_back" @tap="$navigateBack"/>
-  </ActionBar>
+  <ActionBar :title="title"></ActionBar>
 </template>
 
 <script>

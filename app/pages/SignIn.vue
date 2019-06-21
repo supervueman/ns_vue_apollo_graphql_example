@@ -1,6 +1,6 @@
 <template>
   <Page>
-    <action-bar-component title="Sign in"></action-bar-component>
+    <ActionBar title="Example"></ActionBar>
     <StackLayout>
       <Label class="message" text="Login" col="0" row="0"/>
       <Label class="message" :text="profileId" col="0" row="0"/>
@@ -12,9 +12,8 @@
 </template>
 
 <script>
-import ActionBarComponent from "../components/ActionBarComponent";
-import { apolloClient } from "../plugins/apolloProvider";
-import { SIGN_IN } from "../graphql/signIn";
+import ActionBarComponent from "@/components/ActionBarComponent";
+import { SIGN_IN } from "@/graphql/signIn";
 export default {
   data() {
     return {
